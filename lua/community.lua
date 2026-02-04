@@ -10,7 +10,7 @@ return {
   { import = "astrocommunity.pack.yaml" },
   { import = "astrocommunity.pack.json" },
   { import = "astrocommunity.pack.bash" },
-  { import = "astrocommunity.colorscheme.solarized-osaka-nvim" },
+  { import = "astrocommunity.colorscheme.nord-nvim" },
   { import = "astrocommunity.git.diffview-nvim" },
   { import = "astrocommunity.motion.flash-nvim" },
   { import = "astrocommunity.diagnostics.trouble-nvim" },
