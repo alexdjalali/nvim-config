@@ -38,7 +38,7 @@ return {
         ["<leader>gd"] = { "<cmd>DiffviewOpen<cr>", desc = "Diff view" },
         ["<leader>gh"] = { "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
         -- Docker & Kubernetes
-        ["<leader>ld"] = { "<cmd>LazyDocker<cr>", desc = "LazyDocker" },
+        ["<leader>lD"] = { "<cmd>LazyDocker<cr>", desc = "LazyDocker" },
         ["<leader>lk"] = { "<cmd>K9s<cr>", desc = "K9s" },
         -- Database
         ["<leader>ls"] = { "<cmd>LazySql<cr>", desc = "LazySql" },

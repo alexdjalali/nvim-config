@@ -10,6 +10,9 @@ return {
             -- Auto-detect uv .venv
             local venv = vim.fn.getcwd() .. "/.venv"
             if vim.fn.isdirectory(venv) == 1 then
+              if not c.settings.python then
+                c.settings.python = {}
+              end
               c.settings.python.pythonPath = venv .. "/bin/python"
             end
           end,

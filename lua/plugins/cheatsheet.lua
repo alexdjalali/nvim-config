@@ -22,7 +22,7 @@ return {
           "",
           "  Containers & Kubernetes",
           "  ───────────────────────",
-          "  <leader>ld    LazyDocker        Docker management TUI",
+          "  <leader>lD    LazyDocker        Docker management TUI",
           "  <leader>lk    K9s               Kubernetes TUI",
           "  <leader>k     Kubectl           Native K8s interface",
           "",
