@@ -27,10 +27,4 @@ return {
     "towolf/vim-helm",
     ft = "helm",
   },
-
-  -- SchemaStore.nvim - 700+ stars - JSON schemas
-  {
-    "b0o/SchemaStore.nvim",
-    ft = { "json", "jsonc", "yaml" },
-  },
 }
