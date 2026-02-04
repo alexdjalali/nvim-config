@@ -111,3 +111,23 @@ end
 
 -- Run after plugins are loaded
 vim.defer_fn(setup_devops_tools, 100)
+
+-- Prevent comment errors in non-modifiable buffers
+local function safe_comment()
+  if vim.bo.modifiable then
+    return "gc"
+  else
+    vim.notify("Buffer is not modifiable", vim.log.levels.WARN)
+    return ""
+  end
+end
+
+vim.keymap.set({ "n", "v" }, "gc", safe_comment, { expr = true, desc = "Comment (safe)" })
+vim.keymap.set("n", "gcc", function()
+  if vim.bo.modifiable then
+    return "gcc"
+  else
+    vim.notify("Buffer is not modifiable", vim.log.levels.WARN)
+    return ""
+  end
+end, { expr = true, desc = "Comment line (safe)" })

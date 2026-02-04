@@ -181,9 +181,9 @@ return {
     opts = {},
   },
 
-  -- wakatime - time tracking
-  {
-    "wakatime/vim-wakatime",
-    event = "VeryLazy",
-  },
+  -- wakatime - time tracking (DISABLED)
+  -- {
+  --   "wakatime/vim-wakatime",
+  --   event = "VeryLazy",
+  -- },
 }
