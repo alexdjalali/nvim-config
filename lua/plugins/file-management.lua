@@ -1,5 +1,19 @@
 ---@type LazySpec
 return {
+  -- neo-tree configuration override
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    opts = {
+      filesystem = {
+        filtered_items = {
+          visible = true,
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+      },
+    },
+  },
+
   -- project.nvim - 1k+ stars - project management
   {
     "ahmedkhalf/project.nvim",

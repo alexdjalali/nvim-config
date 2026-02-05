@@ -16,6 +16,11 @@ require("lazy").setup({
 } --[[@as LazySpec]], {
   -- Configure any other `lazy.nvim` configuration options here
   install = { colorscheme = { "astrotheme", "habamax" } },
+  git = {
+    cmd = "/opt/homebrew/bin/git", -- explicit path to git
+    timeout = 300, -- increase timeout to 5 minutes
+  },
+  concurrency = 4, -- limit concurrent git operations
   ui = { backdrop = 100 },
   performance = {
     rtp = {

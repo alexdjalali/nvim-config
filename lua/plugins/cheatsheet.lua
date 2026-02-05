@@ -80,8 +80,8 @@ return {
           "  <leader>dt    Terminate         Stop debugging",
           "  <leader>du    Debug UI          Toggle debug UI",
           "",
-          "  Refactoring (NEW!)",
-          "  ──────────────────",
+          "  Refactoring",
+          "  ───────────",
           "  <leader>re    Extract Func      Extract to function",
           "  <leader>rv    Extract Var       Extract variable",
           "  <leader>ri    Inline Var        Inline variable",
@@ -113,16 +113,35 @@ return {
           "  /tasks        Task List         View task list",
           "  Ctrl-c Ctrl-c Cancel            Cancel operation",
           "",
-          "  Visual Enhancements (NEW!)",
-          "  ──────────────────────────",
+          "  Visual Enhancements",
+          "  ───────────────────",
           "  <leader>tc    Context           Toggle sticky headers",
           "  <leader>tw    Twilight          Dim inactive code",
+          "  <leader>ut    Transparency      Toggle transparent bg",
           "  <leader>wp    Window Pick       Visual window select",
-          "  <leader>fml   Make it Rain      Code rain animation",
           "",
-          "  This Cheatsheet",
+          "  Fun & Games 🎮",
+          "  ──────────────",
+          "  <leader>fml   Make it Rain      Code rain animation",
+          "  <leader>fmg   Game of Life      Conway's Game of Life",
+          "  <leader>fv    Vim Be Good       Practice vim motions",
+          "  <leader>fl    LeetCode          Solve coding problems",
+          "",
+          "  Virtual Pets 🦆",
           "  ───────────────",
-          "  <leader>?     Toggle            Show/hide this window",
+          "  <leader>dd    Hatch Duck        🦆 Spawn a duck",
+          "  <leader>dc    Hatch Cat         🐱 Spawn a cat",
+          "  <leader>dg    Hatch Dog         🐶 Spawn a dog",
+          "  <leader>dr    Hatch Crab        🦀 Spawn a crab",
+          "  <leader>ds    Hatch Snake       🐍 Spawn a snake",
+          "  <leader>dk    Cook One          Remove one pet",
+          "  <leader>da    Cook All          Remove all pets",
+          "",
+          "  Help Cheatsheets",
+          "  ────────────────",
+          "  <leader>?     DevOps            This window (tools)",
+          "  <leader>??    Vim essentials    Basic Neovim commands",
+          "  <leader>?l    Languages         Go & Python shortcuts",
           "",
           "  Press <Esc> or q to close this window",
           "",
@@ -279,10 +298,11 @@ return {
           "  :wq / ZZ      Save & quit           Write and close",
           "  :q! / ZQ      Quit no save          Close without saving",
           "",
-          "  Help",
-          "  ────",
-          "  <leader>?     Custom tools          DevOps & productivity",
-          "  <leader>??    This window           Essential Vim commands",
+          "  Help Cheatsheets",
+          "  ────────────────",
+          "  <leader>?     DevOps tools          Productivity & tools",
+          "  <leader>??    Vim essentials        This window (you are here)",
+          "  <leader>?l    Languages             Go & Python shortcuts",
           "",
           "  Press <Esc> or q to close this window",
           "",
@@ -343,6 +363,194 @@ return {
         end, { buffer = buf, nowait = true })
       end
 
+      -- Create function for language-specific shortcuts
+      local function show_language_cheatsheet()
+        local lines = {
+          "╭─────────────────────────────────────────────────────────╮",
+          "│           🔧 Language-Specific Shortcuts                │",
+          "╰─────────────────────────────────────────────────────────╯",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │                    🐹 Go Development                  │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  Struct Tags (gopher.nvim)",
+          "  ─────────────────────────",
+          "  <leader>Gt    Add json tags     Add json struct tags",
+          "  <leader>GT    Remove json       Remove json tags",
+          "  <leader>Gy    Add yaml tags     Add yaml struct tags",
+          "  <leader>Gx    Clear all tags    Remove all struct tags",
+          "",
+          "  Code Generation",
+          "  ───────────────",
+          "  <leader>Gi    Implement         Implement interface stubs",
+          "  <leader>Ge    If err            Generate if err != nil block",
+          "  <leader>Gc    Comment           Generate doc comment",
+          "  <leader>Gf    Fill struct       Fill struct with defaults",
+          "  <leader>Gp    Fill switch       Fill switch cases",
+          "",
+          "  Testing",
+          "  ───────",
+          "  <leader>Ga    Add test          Generate test for function",
+          "  <leader>GA    Add all tests     Generate tests for all funcs",
+          "  <leader>GE    Add exported      Tests for exported funcs only",
+          "  <leader>Gv    Alt file          Toggle test ↔ implementation",
+          "  <leader>GV    Alt vsplit        Open alt file in vsplit",
+          "",
+          "  Running & Building",
+          "  ──────────────────",
+          "  <leader>Gr    Go run            Run current file/package",
+          "  <leader>Gs    Go stop           Stop running process",
+          "  <leader>Gm    Go mod tidy       Tidy go.mod dependencies",
+          "  <leader>Gl    Go lint           Run golangci-lint",
+          "  <leader>Gd    Go doc            Show documentation",
+          "",
+          "  LSP Features (gopls)",
+          "  ────────────────────",
+          "  gd            Definition        Jump to definition",
+          "  gr            References        Find all references",
+          "  K             Hover             Show documentation",
+          "  <leader>la    Code actions      Organize imports, etc.",
+          "  <leader>lr    Rename            Rename symbol",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │                  🐍 Python Development                │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  Virtual Environments",
+          "  ────────────────────",
+          "  <leader>pv    Select venv       Choose virtualenv (Telescope)",
+          "  <leader>pV    Cached venv       Select from cached venvs",
+          "                                  Supports: venv, poetry, conda, uv",
+          "",
+          "  REPL (iron.nvim)",
+          "  ────────────────",
+          "  <leader>pr    Open REPL         Start IPython/Python REPL",
+          "  <leader>pR    Restart REPL      Restart the REPL",
+          "  <leader>pH    Hide REPL         Hide REPL window",
+          "  <leader>ps    Send selection    Send visual selection to REPL",
+          "  <leader>pl    Send line         Send current line to REPL",
+          "  <leader>pp    Send paragraph    Send paragraph to REPL",
+          "  <leader>pf    Send file         Send entire file to REPL",
+          "  <leader>pu    Send until cursor Send from start to cursor",
+          "  <leader>pc    Clear REPL        Clear REPL output",
+          "  <leader>pq    Quit REPL         Close REPL session",
+          "",
+          "  Testing (neotest)",
+          "  ─────────────────",
+          "  <leader>tt    Run nearest       Run test under cursor",
+          "  <leader>tf    Run file          Run all tests in file",
+          "  <leader>ts    Run suite         Run entire test suite",
+          "  <leader>to    Show output       Show test output",
+          "  <leader>tS    Stop              Stop running tests",
+          "",
+          "  LSP Features (basedpyright)",
+          "  ───────────────────────────",
+          "  gd            Definition        Jump to definition",
+          "  gr            References        Find all references",
+          "  K             Hover             Show documentation/types",
+          "  <leader>la    Code actions      Quick fixes, imports",
+          "  <leader>lr    Rename            Rename symbol",
+          "",
+          "  Documentation (neogen)",
+          "  ──────────────────────",
+          "  <leader>nf    Function doc      Generate function docstring",
+          "  <leader>nc    Class doc         Generate class docstring",
+          "  <leader>nt    Type doc          Generate type docstring",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │                  🔍 Static Analysis                   │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  Linters Enabled",
+          "  ───────────────",
+          "  Go:     golangci-lint (gosec, revive, gocritic, errorlint)",
+          "  Python: ruff, mypy, basedpyright",
+          "  Shell:  shellcheck",
+          "  Docker: hadolint",
+          "  YAML:   yamllint",
+          "  TF:     tflint",
+          "",
+          "  Diagnostics",
+          "  ───────────",
+          "  <leader>xx    All diagnostics   Show all in Trouble",
+          "  <leader>xX    Buffer diags      Current buffer only",
+          "  ]d / [d       Next/prev         Jump between diagnostics",
+          "",
+          "  Help Cheatsheets",
+          "  ────────────────",
+          "  <leader>?     DevOps tools      Productivity & tools",
+          "  <leader>??    Vim essentials    Basic Neovim commands",
+          "  <leader>?l    This window       Language-specific (you are here)",
+          "",
+          "  Press <Esc> or q to close this window",
+          "",
+        }
+
+        -- Create buffer
+        local buf = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+        vim.api.nvim_buf_set_option(buf, "modifiable", false)
+        vim.api.nvim_buf_set_option(buf, "filetype", "cheatsheet")
+
+        -- Calculate window size
+        local width = 63
+        local height = math.min(#lines, vim.o.lines - 4)
+        local row = math.floor((vim.o.lines - height) / 2)
+        local col = math.floor((vim.o.columns - width) / 2)
+
+        -- Create window
+        local win_opts = {
+          relative = "editor",
+          width = width,
+          height = height,
+          row = row,
+          col = col,
+          style = "minimal",
+          border = "rounded",
+        }
+
+        local win = vim.api.nvim_open_win(buf, true, win_opts)
+
+        -- Set window options
+        vim.api.nvim_win_set_option(win, "winblend", 0)
+        vim.api.nvim_win_set_option(win, "cursorline", false)
+
+        -- Set highlights for title box
+        vim.api.nvim_buf_add_highlight(buf, -1, "Title", 1, 0, -1)
+        vim.api.nvim_buf_add_highlight(buf, -1, "Comment", 0, 0, -1)
+        vim.api.nvim_buf_add_highlight(buf, -1, "Comment", 2, 0, -1)
+
+        -- Highlight section headers and keybindings
+        for i, line in ipairs(lines) do
+          -- Section boxes (Go/Python/Static Analysis headers)
+          if line:match("^  ╭") or line:match("^  │") or line:match("^  ╰") then
+            vim.api.nvim_buf_add_highlight(buf, -1, "Function", i - 1, 0, -1)
+          end
+          -- Sub-section headers
+          if line:match("^  [%w%s%(%)]+$") and not line:match("^  ╭") then
+            vim.api.nvim_buf_add_highlight(buf, -1, "Type", i - 1, 0, -1)
+          end
+          -- Keybindings
+          if line:match("^  <leader>") or line:match("^  gd") or line:match("^  gr") or line:match("^  K ") or line:match("^  %]") then
+            vim.api.nvim_buf_add_highlight(buf, -1, "String", i - 1, 2, 18)
+          end
+          -- Linter list items
+          if line:match("^  Go:") or line:match("^  Python:") or line:match("^  Shell:") or line:match("^  Docker:") or line:match("^  YAML:") or line:match("^  TF:") then
+            vim.api.nvim_buf_add_highlight(buf, -1, "Keyword", i - 1, 2, 10)
+          end
+        end
+
+        -- Close on q or Esc
+        vim.keymap.set("n", "q", function()
+          vim.api.nvim_win_close(win, true)
+        end, { buffer = buf, nowait = true })
+
+        vim.keymap.set("n", "<Esc>", function()
+          vim.api.nvim_win_close(win, true)
+        end, { buffer = buf, nowait = true })
+      end
+
       -- Add keybinding to opts.mappings
       if not opts.mappings then opts.mappings = {} end
       if not opts.mappings.n then opts.mappings.n = {} end
@@ -355,6 +563,11 @@ return {
       opts.mappings.n["<leader>??"] = {
         show_essential_commands,
         desc = "Show essential Neovim commands",
+      }
+
+      opts.mappings.n["<leader>?l"] = {
+        show_language_cheatsheet,
+        desc = "Show language-specific shortcuts",
       }
 
       return opts

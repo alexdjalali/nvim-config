@@ -1,3 +1,6 @@
+-- Disable swap files
+vim.opt.swapfile = false
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
@@ -109,8 +112,27 @@ local function setup_devops_tools()
   end, {})
 end
 
+-- Claude Code split terminal setup
+local function setup_claude_code()
+  vim.api.nvim_create_user_command("ClaudeCode", function()
+    -- Create horizontal split at the bottom with Claude
+    vim.cmd("botright split | terminal claude")
+    -- Resize bottom pane to ~40% of screen height
+    vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
+    -- Split that pane vertically and open shell on the right
+    vim.cmd("vsplit | terminal")
+    -- Go back to left pane (Claude) and enter insert mode
+    vim.cmd("wincmd h")
+    vim.cmd("startinsert")
+  end, {})
+
+  -- Keymap for quick access
+  vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Open Claude Code split" })
+end
+
 -- Run after plugins are loaded
 vim.defer_fn(setup_devops_tools, 100)
+vim.defer_fn(setup_claude_code, 100)
 
 -- Prevent comment errors in non-modifiable buffers
 local function safe_comment()

@@ -1,5 +1,17 @@
 -- This file simply bootstraps the installation of Lazy.nvim and then calls other files for execution
 -- This file doesn't necessarily need to be touched, BE CAUTIOUS editing this file and proceed at your own risk.
+
+-- Ensure Homebrew binaries are in PATH (fixes git spawn issues when launched from GUI)
+vim.env.PATH = "/opt/homebrew/bin:/usr/local/bin:" .. vim.env.PATH
+
+-- Ensure SSH agent is available for git operations
+if not vim.env.SSH_AUTH_SOCK then
+  local sock = vim.fn.expand("$HOME/Library/Group Containers/*.com.apple.ssh-agent/ssh-agent.sock")
+  if vim.fn.filereadable(sock) == 1 then
+    vim.env.SSH_AUTH_SOCK = sock
+  end
+end
+
 local lazypath = vim.env.LAZY or vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
 
 if not (vim.env.LAZY or (vim.uv or vim.loop).fs_stat(lazypath)) then
