@@ -1,37 +1,13 @@
 ---@type LazySpec
 return {
-  -- alpha-nvim - 2k+ stars - beautiful dashboard
+  -- Disable Snacks.notifier (conflicts with noice.nvim/nvim-notify)
+  -- Disable Snacks.image (iTerm doesn't support kitty graphics protocol)
   {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local alpha = require("alpha")
-      local dashboard = require("alpha.themes.dashboard")
-
-      dashboard.section.header.val = {
-        "                                                     ",
-        "  ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗ ",
-        "  ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║ ",
-        "  ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║ ",
-        "  ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║ ",
-        "  ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║ ",
-        "  ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝ ",
-        "                                                     ",
-      }
-
-      dashboard.section.buttons.val = {
-        dashboard.button("f", "  Find file", ":Telescope find_files <CR>"),
-        dashboard.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("r", "  Recent files", ":Telescope oldfiles <CR>"),
-        dashboard.button("g", "  Find text", ":Telescope live_grep <CR>"),
-        dashboard.button("t", "  Tasks", ":Neorg index <CR>"),
-        dashboard.button("s", "  Restore session", ":SessionRestore <CR>"),
-        dashboard.button("q", "  Quit", ":qa<CR>"),
-      }
-
-      alpha.setup(dashboard.config)
-    end,
+    "folke/snacks.nvim",
+    opts = {
+      notifier = { enabled = false },
+      image = { enabled = false },
+    },
   },
 
   -- nvim-bqf - 2k+ stars - better quickfix
@@ -96,6 +72,7 @@ return {
       "rcarriga/nvim-notify",
     },
     opts = {
+      notify = { enabled = false },
       lsp = {
         progress = { enabled = true },
         override = {
@@ -139,13 +116,8 @@ return {
       timeout = 2000,
       render = "compact",
       stages = "fade",
+      background_colour = "#000000",
     },
   },
 
-  -- dressing.nvim - 2k+ stars - better select/input
-  {
-    "stevearc/dressing.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
 }

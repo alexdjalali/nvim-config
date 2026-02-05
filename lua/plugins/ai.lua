@@ -11,8 +11,8 @@ return {
           local Terminal = require("toggleterm.terminal").Terminal
           local claude = Terminal:new({
             cmd = "claude",
-            direction = "horizontal",
-            size = 20,
+            direction = "vertical",
+            size = function() return math.floor(vim.o.columns * 0.4) end,
             close_on_exit = false,
             on_open = function(term)
               vim.cmd("startinsert!")
@@ -30,8 +30,8 @@ return {
           local Terminal = require("toggleterm.terminal").Terminal
           local claude = Terminal:new({
             cmd = "claude --file " .. vim.fn.shellescape(file),
-            direction = "horizontal",
-            size = 20,
+            direction = "vertical",
+            size = function() return math.floor(vim.o.columns * 0.4) end,
             close_on_exit = false,
           })
           claude:toggle()

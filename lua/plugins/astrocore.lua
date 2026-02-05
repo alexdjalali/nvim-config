@@ -26,6 +26,7 @@ return {
         shiftwidth = 2,
         expandtab = true,
         clipboard = "unnamedplus", -- Use system clipboard
+        sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
       },
     },
     mappings = {
@@ -37,15 +38,15 @@ return {
         ["<leader>gg"] = { "<cmd>LazyGit<cr>", desc = "LazyGit" },
         ["<leader>gd"] = { "<cmd>DiffviewOpen<cr>", desc = "Diff view" },
         ["<leader>gh"] = { "<cmd>DiffviewFileHistory %<cr>", desc = "File history" },
-        -- Docker & Kubernetes
-        ["<leader>lD"] = { "<cmd>LazyDocker<cr>", desc = "LazyDocker" },
-        ["<leader>lk"] = { "<cmd>K9s<cr>", desc = "K9s" },
+        -- Docker & Kubernetes (using <leader>L to avoid conflict with LSP <leader>l)
+        ["<leader>Ld"] = { "<cmd>LazyDocker<cr>", desc = "LazyDocker" },
+        ["<leader>Lk"] = { "<cmd>K9s<cr>", desc = "K9s" },
         -- Database
-        ["<leader>ls"] = { "<cmd>LazySql<cr>", desc = "LazySql" },
+        ["<leader>Ls"] = { "<cmd>LazySql<cr>", desc = "LazySql" },
         -- System Monitor
-        ["<leader>lb"] = { "<cmd>Btop<cr>", desc = "Btop (toggle)" },
+        ["<leader>Lb"] = { "<cmd>Btop<cr>", desc = "Btop (toggle)" },
         -- Email
-        ["<leader>lm"] = { "<cmd>terminal neomutt<cr>", desc = "Neomutt (email)" },
+        ["<leader>Lm"] = { "<cmd>terminal neomutt<cr>", desc = "Neomutt (email)" },
         -- Tasks
         ["<leader>T"] = { function()
           -- Toggle neorg task panel on left
@@ -71,9 +72,6 @@ return {
             vim.cmd("wincmd H") -- Move window to far left
           end
         end, desc = "Toggle task panel" },
-        -- Diagnostics
-        ["<leader>xx"] = { "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics" },
-        ["<leader>xX"] = { "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer diagnostics" },
       },
       i = {
         ["<C-s>"] = { "<esc><cmd>w<cr>", desc = "Save" },

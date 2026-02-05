@@ -10,6 +10,13 @@ return {
     local null_ls = require("null-ls")
     local b = null_ls.builtins
 
+    -- Filter out any shellcheck sources added by astrocommunity (removed from none-ls builtins)
+    if opts.sources then
+      opts.sources = vim.tbl_filter(function(source)
+        return not (source and source.name == "shellcheck")
+      end, opts.sources)
+    end
+
     -- Only insert new sources, do not replace the existing ones
     opts.sources = require("astrocore").list_insert_unique(opts.sources, {
       -- ╭─────────────────────────────────────────────────────────╮
@@ -42,9 +49,9 @@ return {
           return {}
         end,
       }),
-      -- ruff - Fast linter and formatter (enabled by default, but ensure config)
-      b.formatting.ruff,
-      b.formatting.ruff_organize_imports,
+      -- ruff - Fast linter and formatter (from none-ls-extras)
+      require("none-ls.formatting.ruff").with({}),
+      require("none-ls.formatting.ruff_format").with({}),
 
       -- ╭─────────────────────────────────────────────────────────╮
       -- │                     Infrastructure                      │
@@ -52,7 +59,7 @@ return {
       -- Terraform
       b.formatting.terraform_fmt,
       b.diagnostics.terraform_validate,
-      b.diagnostics.tflint,
+      -- tflint removed from none-ls builtins; use mason + lspconfig instead
 
       -- YAML
       b.diagnostics.yamllint.with({
@@ -62,10 +69,7 @@ return {
       -- Docker
       b.diagnostics.hadolint,
 
-      -- Shell
-      b.diagnostics.shellcheck.with({
-        extra_args = { "-x" }, -- Follow source files
-      }),
+      -- Shell (shellcheck removed from none-ls builtins; use mason + bashls instead)
       b.formatting.shfmt.with({
         extra_args = { "-i", "2", "-ci", "-bn" }, -- 2 space indent, case indent, binary newline
       }),

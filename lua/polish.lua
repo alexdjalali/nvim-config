@@ -1,10 +1,16 @@
 -- Disable swap files
 vim.opt.swapfile = false
 
+-- Disable unused providers
+vim.g.loaded_perl_provider = 0
+
+-- Limit terminal scrollback to reduce memory usage
+vim.opt.scrollback = 1000
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
-    vim.highlight.on_yank({ timeout = 200 })
+    vim.hl.on_yank({ timeout = 200 })
   end,
 })
 
@@ -114,20 +120,59 @@ end
 
 -- Claude Code split terminal setup
 local function setup_claude_code()
+  local status_ok, Terminal = pcall(require, "toggleterm.terminal")
+  if not status_ok then
+    return
+  end
+
+  local claude_term = Terminal.Terminal:new({
+    cmd = "claude",
+    count = 10,
+    direction = "horizontal",
+    hidden = true,
+    on_open = function()
+      vim.cmd("startinsert!")
+    end,
+  })
+
+  local shell_term = Terminal.Terminal:new({
+    count = 11,
+    direction = "horizontal",
+    hidden = true,
+    on_open = function()
+      vim.cmd("startinsert!")
+    end,
+  })
+
   vim.api.nvim_create_user_command("ClaudeCode", function()
-    -- Create horizontal split at the bottom with Claude
-    vim.cmd("botright split | terminal claude")
-    -- Resize bottom pane to ~40% of screen height
-    vim.cmd("resize " .. math.floor(vim.o.lines * 0.4))
-    -- Split that pane vertically and open shell on the right
-    vim.cmd("vsplit | terminal")
-    -- Go back to left pane (Claude) and enter insert mode
-    vim.cmd("wincmd h")
-    vim.cmd("startinsert")
+    if claude_term:is_open() then
+      if shell_term.window and vim.api.nvim_win_is_valid(shell_term.window) then
+        shell_term:close()
+      end
+      claude_term:close()
+    else
+      -- Open Claude as bottom split at 25% height
+      claude_term:open(math.floor(vim.o.lines * 0.25), "horizontal")
+      -- Vsplit the bottom pane for a side-by-side shell
+      vim.cmd("belowright vsplit")
+      -- Spawn shell toggleterm buffer if needed, then display it
+      if not shell_term.bufnr or not vim.api.nvim_buf_is_valid(shell_term.bufnr) then
+        local buf = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_win_set_buf(0, buf)
+        shell_term.job_id = vim.fn.termopen(vim.o.shell)
+        shell_term.bufnr = buf
+      else
+        vim.api.nvim_win_set_buf(0, shell_term.bufnr)
+      end
+      shell_term.window = vim.api.nvim_get_current_win()
+      -- Focus Claude pane
+      vim.cmd("wincmd h")
+      vim.cmd("startinsert")
+    end
   end, {})
 
   -- Keymap for quick access
-  vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Open Claude Code split" })
+  vim.keymap.set("n", "<leader>ac", "<cmd>ClaudeCode<cr>", { desc = "Toggle Claude Code split" })
 end
 
 -- Run after plugins are loaded
