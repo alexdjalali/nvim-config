@@ -1,6 +1,19 @@
 -- Disable swap files
 vim.opt.swapfile = false
 
+-- Focus window on mouse hover
+vim.opt.mousemoveevent = true
+vim.keymap.set("n", "<MouseMove>", function()
+  local pos = vim.fn.getmousepos()
+  if pos.winid ~= 0 and pos.winid ~= vim.api.nvim_get_current_win() then
+    vim.schedule(function()
+      if vim.api.nvim_win_is_valid(pos.winid) then
+        vim.api.nvim_set_current_win(pos.winid)
+      end
+    end)
+  end
+end, { silent = true })
+
 -- Disable unused providers
 vim.g.loaded_perl_provider = 0
 

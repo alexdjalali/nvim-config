@@ -157,6 +157,7 @@ return {
           "  <leader>?     DevOps            This window (tools)",
           "  <leader>??    Vim essentials    Basic Neovim commands",
           "  <leader>?l    Languages         Go & Python shortcuts",
+          "  <leader>?w    Workflows         Step-by-step guides",
           "",
           "  Press <Esc> or q to close this window",
           "",
@@ -566,6 +567,139 @@ return {
         end, { buffer = buf, nowait = true })
       end
 
+      -- Create function for workflow cheatsheet
+      local function show_workflow_cheatsheet()
+        local lines = {
+          "╭─────────────────────────────────────────────────────────╮",
+          "│              Workflows (Step-by-Step)                   │",
+          "╰─────────────────────────────────────────────────────────╯",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │               Code Review (Octo)                     │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  1. <leader>gpl       List open PRs",
+          "  2. <Enter>           Open PR to read description",
+          "  3. :Octo pr checkout Clone PR branch locally",
+          "  4. :Octo pr changes  List changed files",
+          "  5. :Octo review start Begin formal review",
+          "  6.  Navigate to line, :Octo comment add",
+          "  7. :Octo review submit  Submit (approve/comment)",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │               Feature Branch                         │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  1. <leader>gg        Open LazyGit",
+          "  2.  b → new branch   Create feature branch",
+          "  3.  ... make changes ...",
+          "  4.  <C-s>            Save files",
+          "  5. <leader>gg        Stage & commit in LazyGit",
+          "  6.  P → push         Push to remote",
+          "  7. <leader>gpc       Create PR from Neovim",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │               Debug Session                          │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  1. <leader>db        Set breakpoint on line",
+          "  2. <leader>dc        Start/continue debugger (F5)",
+          "  3. <leader>do        Step over (F10)",
+          "  4. <leader>di        Step into (F11)",
+          "  5. <leader>dO        Step out (S-F11)",
+          "  6. <leader>dh        Hover variable to inspect",
+          "  7. <leader>du        Toggle debug UI (watches/stack)",
+          "  8. <leader>dt        Terminate session",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │               Merge Conflict Resolution              │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  1. <leader>gg        Pull/merge in LazyGit",
+          "  2. <leader>gcl       List all conflicts in quickfix",
+          "  3. ]x                Jump to next conflict",
+          "  4.  Review both versions (highlighted inline)",
+          "  5. <leader>gco       Choose ours (current)",
+          "     <leader>gct       Choose theirs (incoming)",
+          "     <leader>gcb       Choose both",
+          "     <leader>gc0       Choose none",
+          "  6.  Repeat 3-5 for each conflict",
+          "  7. <leader>gg        Stage & commit resolution",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │               Refactor                               │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  1. gd                Go to definition",
+          "  2. gr                Find all references",
+          "  3. <leader>lr        Rename symbol across files",
+          "  4.  (visual select) → <leader>ri  Inline variable",
+          "  5. <leader>tr        Run nearest test to verify",
+          "  6. <leader>xx        Check diagnostics are clean",
+          "  7. <leader>gg        Commit the refactor",
+          "",
+          "  ╭───────────────────────────────────────────────────────╮",
+          "  │               Infrastructure (Terraform/K8s)         │",
+          "  ╰───────────────────────────────────────────────────────╯",
+          "",
+          "  1.  Edit .tf files   (LSP: terraformls)",
+          "  2.  :!terraform plan Review planned changes",
+          "  3.  :!terraform apply Apply (confirm in terminal)",
+          "  4. <leader>Ld        LazyDocker → check containers",
+          "  5. <leader>Lk        K9s → check pods/services",
+          "  6. <leader>k         Kubectl → native K8s commands",
+          "  7. <leader>gg        Commit infra changes",
+          "",
+          "  Press <Esc> or q to close this window",
+          "",
+        }
+
+        local buf = vim.api.nvim_create_buf(false, true)
+        vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+        vim.api.nvim_buf_set_option(buf, "modifiable", false)
+        vim.api.nvim_buf_set_option(buf, "filetype", "cheatsheet")
+
+        local width = 63
+        local height = math.min(#lines, vim.o.lines - 4)
+        local row = math.floor((vim.o.lines - height) / 2)
+        local col = math.floor((vim.o.columns - width) / 2)
+
+        local win = vim.api.nvim_open_win(buf, true, {
+          relative = "editor",
+          width = width,
+          height = height,
+          row = row,
+          col = col,
+          style = "minimal",
+          border = "rounded",
+        })
+
+        vim.api.nvim_win_set_option(win, "winblend", 0)
+        vim.api.nvim_win_set_option(win, "cursorline", false)
+
+        -- Highlights
+        vim.api.nvim_buf_add_highlight(buf, -1, "Title", 1, 0, -1)
+        vim.api.nvim_buf_add_highlight(buf, -1, "Comment", 0, 0, -1)
+        vim.api.nvim_buf_add_highlight(buf, -1, "Comment", 2, 0, -1)
+
+        for i, line in ipairs(lines) do
+          if line:match("^  ╭") or line:match("^  │") or line:match("^  ╰") then
+            vim.api.nvim_buf_add_highlight(buf, -1, "Function", i - 1, 0, -1)
+          end
+          if line:match("^  %d+%.") then
+            vim.api.nvim_buf_add_highlight(buf, -1, "String", i - 1, 5, 22)
+          end
+        end
+
+        vim.keymap.set("n", "q", function()
+          vim.api.nvim_win_close(win, true)
+        end, { buffer = buf, nowait = true })
+
+        vim.keymap.set("n", "<Esc>", function()
+          vim.api.nvim_win_close(win, true)
+        end, { buffer = buf, nowait = true })
+      end
+
       -- Add keybinding to opts.mappings
       if not opts.mappings then opts.mappings = {} end
       if not opts.mappings.n then opts.mappings.n = {} end
@@ -583,6 +717,11 @@ return {
       opts.mappings.n["<leader>?l"] = {
         show_language_cheatsheet,
         desc = "Show language-specific shortcuts",
+      }
+
+      opts.mappings.n["<leader>?w"] = {
+        show_workflow_cheatsheet,
+        desc = "Show workflow guides",
       }
 
       return opts

@@ -52,7 +52,7 @@ return {
   -- venv-selector.nvim - Virtual environment selector
   {
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp",
+    branch = "main",
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim",

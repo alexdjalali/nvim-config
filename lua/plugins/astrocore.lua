@@ -26,6 +26,7 @@ return {
         shiftwidth = 2,
         expandtab = true,
         clipboard = "unnamedplus", -- Use system clipboard
+        mousefocus = true, -- Focus window on mouse hover
         sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
       },
     },
